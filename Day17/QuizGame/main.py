@@ -10,6 +10,7 @@ for i in range(len(question_data)):
     question_bank.append(Question(text, answer))
 
 quiz = QuizBrain(question_bank)
+# new commit
 
 while quiz.still_has_questions():
     quiz.next_question()
