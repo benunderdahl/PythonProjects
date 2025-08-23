@@ -1,5 +1,7 @@
 from turtle import Turtle
-
+ALIGNMENT = "center"
+GAME_FONT = ("Arial", 24, "normal")
+GAME_OVER_FONT = ("Arial", 50, "normal")
 
 class Scoreboard(Turtle):
     def __init__(self):
@@ -18,4 +20,8 @@ class Scoreboard(Turtle):
     def update_score(self):
         self.score += 1
         self.clear()
-        self.write(f"Score: {self.score} ", align="center", font=("Arial", 24, "normal"))
+        self.write(f"Score: {self.score} ", align=ALIGNMENT, font=GAME_FONT)
+
+    def game_over(self):
+        self.goto(0,0)
+        self.write("Game Over", align=ALIGNMENT, font=GAME_OVER_FONT)
