@@ -32,4 +32,3 @@ while len(guessed_states) < 50:
         t.goto(int(state_data.x.item()), int(state_data.y.item()))
         t.write(answer)
 
-states_to_learn = data[~data["state"].isin(guessed_states)]
