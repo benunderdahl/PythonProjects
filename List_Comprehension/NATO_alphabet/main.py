@@ -28,6 +28,14 @@ df = pd.DataFrame(data)
 #TODO 2. Create a list of the phonetic code words from a word that the user inputs.
 new_dict = {row.letter: row.code for (index, row) in df.iterrows()}
 
-name = [n.upper() for n in input("Enter your name for translation to nato phonetic alphabet: ")]
-new_name = [new_dict[n] for n in name if n in new_dict]
-print(new_name)
+def generate_phonetic():
+    name = [n.upper() for n in input("Enter your name for translation to nato phonetic alphabet: ")]
+    try:
+        new_name = [new_dict[letter] for letter in name]
+    except KeyError:
+        print("Enter letters only ")
+        generate_phonetic()
+    else:
+        print(new_name)
+
+generate_phonetic()
