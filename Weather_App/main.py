@@ -4,14 +4,14 @@ from twilio.rest import Client
 SID = 'SKa487d906c39d8b9e86c23e2'
 api_key = 'Cq1bkpzYRJk2LZ7bMvCgJF61'
 base_url = 'https://api.openweathermap.org/data/2.5/forecast'
-account_sid = 'ACfe1e9d3271f86885a3277af8cdb'
-auth_token = '7c14a258ea5412515cd1e7df8a'
-twilio_num = '+14155238886'
+account_sid = 'ACfe1e9d327a3277af8cdb'
+auth_token = '7c14a25812515cd1e7df8a'
+twilio_num = '+141552886'
 
 params = {
     "lat": 29.4252,
     "lon": -98.4946,
-    "appid": '08a654b044bf03aa5c829a1',
+    "appid": '08a654b04aa5c829a1',
     "cnt": 4
 }
 
