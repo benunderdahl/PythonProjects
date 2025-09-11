@@ -27,4 +27,4 @@ class FlightSearch:
         params = {
             "keyword": city
         }
-        response = request.get(self._get_city, params=params, headers)
+        response = requests.get(self._get_city, params=params)
