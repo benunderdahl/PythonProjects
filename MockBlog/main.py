@@ -34,7 +34,7 @@ def show_post(id):
     response = requests.get(api_endpoint)
     data = response.json()
     curr_post = data[id - 1]
-    return render_template("show_post.html", post=curr_post)
+    return render_template("show_post.html", post=curr_post, header_url=header_url)
 
 
 if __name__ == "__main__":
