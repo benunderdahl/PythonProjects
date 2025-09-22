@@ -1,5 +1,6 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request
 import requests
+from smtplib import SMTP
 
 api_endpoint = "https://api.npoint.io/84bc2ded356d7eb9ffbb"
 
@@ -27,6 +28,21 @@ def post():
 def contact():
     header_url = url_for("static", filename="assets/img/contact-bg.jpg")
     return render_template("contact.html", header_url=header_url)
+
+@app.route('/form-entry', methods=["POST"])
+def receive_data():
+    if request.method == "POST":
+        name = request.form.get("name")
+        email = request.form.get("email")
+        phone = request.form.get("phone")
+        message = request.form.get("message")
+
+        print("Name:", name)
+        print("Email:", email)
+        print("Phone:", phone)
+        print("Message:", message)
+        return render_template("contact.html")
+
 
 @app.route("/show_post/<int:id>")
 def show_post(id):
