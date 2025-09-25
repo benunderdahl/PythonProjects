@@ -21,7 +21,8 @@ class Book(db.Model):
 
 @app.route('/')
 def home():
-    return render_template("index.html", all_books=all_books)
+    books = Book.query.all()
+    return render_template("index.html", books=books)
 
 
 @app.route("/add")
@@ -32,8 +33,10 @@ def add():
 def add_book():
     title = request.form.get("title")
     author = request.form.get("author")
-    rating = request.form.get("rating")
-    all_books.append({"title":title, "author": author, "rating": rating})
+    rating = float(request.form.get("rating"))
+    new_book = Book(title=title, author=author, rating=rating)
+    db.session.add(new_book)
+    db.session.commit()
     return redirect("/")
 
 if __name__ == "__main__":

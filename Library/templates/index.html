@@ -6,9 +6,9 @@
   </head>
   <body>
     <h1>My Library</h1>
-    {% if all_books %}
+    {% if books %}
     <ul>
-      {% for book in all_books %}
+      {% for book in books %}
       <li> {{ book.title }}-{{ book.author }}-{{ book.rating }} </li>
       {% endfor %}
     </ul>
