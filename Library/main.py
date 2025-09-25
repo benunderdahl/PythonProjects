@@ -39,6 +39,19 @@ def add_book():
     db.session.commit()
     return redirect("/")
 
+@app.route("/edit/<int:id>")
+def edit(id):
+    book = Book.query.get(id)
+    return render_template("edit.html", book=book)
+
+@app.route("/update/<int:id>", methods=["GET", "POST"])
+def update(id):
+    book = Book.query.get(id)
+    book.rating = float(request.form.get("rating"))
+    db.session.commit()
+    return redirect("/")
+
+
 if __name__ == "__main__":
     app.run(debug=True)
 
