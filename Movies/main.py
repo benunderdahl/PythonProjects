@@ -43,7 +43,7 @@ class Movie(db.Model):
     year: Mapped[int] = mapped_column(Integer)
     description: Mapped[str] = mapped_column(String(255), nullable=False)
     rating: Mapped[float] = mapped_column(Float, default=0.0)
-    ranking: Mapped[int] = mapped_column(Integer, default=0.0)
+    ranking: Mapped[int] = mapped_column(Integer, default=0.0, unique=True)
     review: Mapped[str] = mapped_column(String)
     img_url: Mapped[str] = mapped_column(String(500))
 
@@ -54,7 +54,7 @@ class Movie(db.Model):
 
 @app.route("/")
 def home():
-    movies = db.session.query(Movie).all()
+    movies = db.session.query(Movie).order_by(Movie.ranking).all()
     print(movies)
     return render_template("index.html", movies=movies)
 
