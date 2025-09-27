@@ -1,11 +1,12 @@
+from attr.setters import validate
 from flask import Flask, render_template, redirect, url_for, request
 from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Integer, String, Float
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired
+from wtforms import StringField, SubmitField, FloatField
+from wtforms.validators import DataRequired, NumberRange
 import requests
 
 
@@ -14,7 +15,10 @@ app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///top_movies.db"
 Bootstrap5(app)
 
-
+class EditForm(FlaskForm):
+    rating = FloatField("Your rating out of 10 e.g. 6.4", validators=[DataRequired(), NumberRange(min=0, max=10)])
+    review = StringField("Your Review", validators=[DataRequired()])
+    submit = SubmitField("Done")
 
 # CREATE DB
 class Base(DeclarativeBase):
@@ -43,6 +47,22 @@ def home():
     movies = db.session.query(Movie).all()
     print(movies)
     return render_template("index.html", movies=movies)
+
+@app.route("/add")
+def add():
+    return render_template("add.html")
+
+@app.route("/edit/<int:id>", methods=["GET", "POST"])
+def edit(id):
+    form = EditForm()
+    movie = Movie.query.get(id)
+    if form.validate_on_submit():
+        movie.rating = form.rating.data
+        movie.description = form.review.data
+        db.session.commit()
+        return redirect("/")
+    return render_template("edit.html", form=form)
+
 
 
 if __name__ == '__main__':
