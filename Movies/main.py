@@ -63,7 +63,12 @@ def edit(id):
         return redirect("/")
     return render_template("edit.html", form=form)
 
-
+@app.route("/delete/<int:id>")
+def delete(id):
+    movie = Movie.query.get(id)
+    db.session.delete(movie)
+    db.session.commit()
+    return redirect("/")
 
 if __name__ == '__main__':
     app.run(debug=True)
