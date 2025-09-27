@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Integer, String, Float
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, FloatField
+from wtforms import StringField, SubmitField, FloatField, IntegerField
 from wtforms.validators import DataRequired, NumberRange
 import requests
 
@@ -18,6 +18,16 @@ Bootstrap5(app)
 class EditForm(FlaskForm):
     rating = FloatField("Your rating out of 10 e.g. 6.4", validators=[DataRequired(), NumberRange(min=0, max=10)])
     review = StringField("Your Review", validators=[DataRequired()])
+    submit = SubmitField("Done")
+
+class AddForm(FlaskForm):
+    title = StringField("Movie Title ", validators=[DataRequired()])
+    year = IntegerField("Year Released", validators=[DataRequired()])
+    description = StringField("Enter a Description", validators=[DataRequired()])
+    rating = FloatField("Enter a Rating", validators=[DataRequired()])
+    ranking = IntegerField("Enter Ranking e.g. 5", validators=[DataRequired(), NumberRange(0, 10)])
+    review = StringField("Enter a Review", validators=[DataRequired()])
+    img_url = StringField("Enter an Image URL", validators=[DataRequired()])
     submit = SubmitField("Done")
 
 # CREATE DB
@@ -48,9 +58,17 @@ def home():
     print(movies)
     return render_template("index.html", movies=movies)
 
-@app.route("/add")
+@app.route("/add", methods=["GET", "POST"])
 def add():
-    return render_template("add.html")
+    form = AddForm()
+    if form.validate_on_submit():
+        new_movie = Movie(title=form.title.data, year=form.year.data, description=form.description.data,
+                          rating=form.rating.data, ranking=form.ranking.data, review=form.review.data,
+                          img_url=form.img_url.data)
+        db.session.add(new_movie)
+        db.session.commit()
+        return redirect("/")
+    return render_template("add.html", form=form)
 
 @app.route("/edit/<int:id>", methods=["GET", "POST"])
 def edit(id):
@@ -58,7 +76,7 @@ def edit(id):
     movie = Movie.query.get(id)
     if form.validate_on_submit():
         movie.rating = form.rating.data
-        movie.description = form.review.data
+        movie.review = form.review.data
         db.session.commit()
         return redirect("/")
     return render_template("edit.html", form=form)
